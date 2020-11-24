@@ -81,6 +81,11 @@ AxisSettings* c_axis_settings;
 
 AxisSettings* axis_settings[MAX_N_AXIS];
 
+StringSetting* user_macro0;
+StringSetting* user_macro1;
+StringSetting* user_macro2;
+StringSetting* user_macro3;
+
 typedef struct {
     const char* name;
     float       steps_per_mm;
@@ -209,8 +214,8 @@ static const char* makeGrblName(int axisNum, int base) {
 
 void make_coordinate(CoordIndex index, const char* name) {
     float coord_data[MAX_N_AXIS] = { 0.0 };
-    auto coord = new Coordinates(name);
-    coords[index] = coord;
+    auto  coord                  = new Coordinates(name);
+    coords[index]                = coord;
     if (!coord->load()) {
         grbl_msg_sendf(CLIENT_SERIAL, MsgLevel::Info, "Propagating %s data to NVS format", coord->getName());
         // If coord->load() returns false it means that no entry
@@ -386,4 +391,9 @@ void make_settings() {
     homing_cycle[3] = new AxisMaskSetting(EXTENDED, WG, NULL, "Homing/Cycle3", DEFAULT_HOMING_CYCLE_3);
     homing_cycle[4] = new AxisMaskSetting(EXTENDED, WG, NULL, "Homing/Cycle4", DEFAULT_HOMING_CYCLE_4);
     homing_cycle[5] = new AxisMaskSetting(EXTENDED, WG, NULL, "Homing/Cycle5", DEFAULT_HOMING_CYCLE_5);
+
+    user_macro0 = new StringSetting(EXTENDED, WG, NULL, "User/Macro0", DEFAULT_USER_MACRO0);
+    user_macro1 = new StringSetting(EXTENDED, WG, NULL, "User/Macro1", DEFAULT_USER_MACRO1);
+    user_macro2 = new StringSetting(EXTENDED, WG, NULL, "User/Macro2", DEFAULT_USER_MACRO2);
+    user_macro3 = new StringSetting(EXTENDED, WG, NULL, "User/Macro3", DEFAULT_USER_MACRO3);
 }
